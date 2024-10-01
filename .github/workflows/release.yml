@@ -17,8 +17,6 @@ jobs:
   precheck:
     name: Precheck
     runs-on: ubuntu-latest
-    outputs:
-      VERSION: ${{ steps.vars.outputs.VERSION }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -71,7 +69,7 @@ jobs:
         with:
           arguments: full-release
         env:
-          JRELEASER_PROJECT_VERSION: ${{ needs.precheck.outputs.VERSION }}
+          JRELEASER_PROJECT_VERSION: ${{ github.event.inputs.version }}
           JRELEASER_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: JReleaser output
