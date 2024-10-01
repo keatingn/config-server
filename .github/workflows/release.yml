@@ -34,7 +34,7 @@ jobs:
         shell: bash
         run: |
           VERSION=${{ github.event.inputs.version }}
-          mvnw versions:set versions:commit -DnewVersion=$VERSION
+          mvn versions:set versions:commit -DnewVersion=$VERSION
           git config --global user.email "3072770+github-actions[bot]@users.noreply.github.com"
           git config --global user.name "GitHub Action"
           git commit -a -m "Releasing version $VERSION"
@@ -64,7 +64,7 @@ jobs:
           maven-version: ${{ env.MAVEN_VERSION }}
 
       - name: Build
-        run: ./mvnw --file pom.xml verify
+        run: mvn --file pom.xml verify
 
       - name: Release
         uses: jreleaser/release-action@v2
