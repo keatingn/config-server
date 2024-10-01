@@ -29,6 +29,10 @@
     <properties>
         <java.version>21</java.version>
         <spring-cloud.version>2023.0.3</spring-cloud.version>
+        <jib.from.platforms>linux/amd64,linux/arm64</jib.from.platforms>
+        <jib.base.image>gcr.io/distroless/java21-debian12:nonroot</jib.base.image>
+        <app.mainClass>ie.nak.configserver.ConfigServerApplication</app.mainClass>
+        <app.port>8080</app.port>
     </properties>
     <dependencies>
         <dependency>
@@ -74,6 +78,28 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
                     <classifier>boot</classifier>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>com.google.cloud.tools</groupId>
+                <artifactId>jib-maven-plugin</artifactId>
+                <version>3.4.3</version>
+                <configuration>
+                    <from>
+                        <image>${jib.base.image}</image>
+                    </from>
+                    <to>
+                        <image>ghcr.io/keatingn/${project.artifactId}</image>
+                        <tags>${project.version}</tags>
+                    </to>
+                    <containerizingMode>packaged</containerizingMode>
+                    <container>
+                        <mainClass>${app.mainClass}</mainClass>
+                        <ports>
+                            <port>${app.port}</port>
+                        </ports>
+                        <user>65532:65532</user>
+                    </container>
                 </configuration>
             </plugin>
         </plugins>

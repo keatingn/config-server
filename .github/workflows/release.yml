@@ -1,7 +1,11 @@
-name: Early Access
+name: Release
+
 on:
-  push:
-    branches: [ main ]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Release version'
+        required: true
 
 env:
   JAVA_VERSION: '21'
@@ -11,7 +15,7 @@ env:
 
 jobs:
   precheck:
-    if: startsWith(github.event.head_commit.message, 'Releasing version') != true
+    name: Precheck
     runs-on: ubuntu-latest
     outputs:
       VERSION: ${{ steps.vars.outputs.VERSION }}
@@ -19,33 +23,31 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Cancel previous run
-        uses: styfle/cancel-workflow-action@0.12.1
+      # Need Maven 3.9.0+ to recognize MAVEN_ARGS.
+      - name: Set up Maven
+        uses: stCarolas/setup-maven@v5
         with:
-          access_token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Setup Java
-        uses: actions/setup-java@v4
-        with:
-          java-version: ${{ env.JAVA_VERSION }}
-          distribution: ${{ env.JAVA_DISTRO }}
-          cache: maven
+          maven-version: ${{ env.MAVEN_VERSION }}
 
       - name: Version
         id: vars
         shell: bash
         run: |
-          VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
-          echo "VERSION=$(echo $VERSION)" >> $GITHUB_OUTPUT
+          VERSION=${{ github.event.inputs.version }}
+          mvnw versions:set versions:commit -DnewVersion=$VERSION
+          git config --global user.email "3072770+github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "GitHub Action"
+          git commit -a -m "Releasing version $VERSION"
+          git push origin main
 
   release:
     needs: [ precheck ]
-    if: endsWith(${{ needs.precheck.outputs.VERSION }}, '-SNAPSHOT')
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
+          ref: main
           fetch-depth: 0
 
       - name: Setup Java
@@ -62,13 +64,12 @@ jobs:
           maven-version: ${{ env.MAVEN_VERSION }}
 
       - name: Build
-        run: mvn --file pom.xml verify
+        run: ./mvnw --file pom.xml verify
 
       - name: Release
         uses: jreleaser/release-action@v2
         with:
           arguments: full-release
-          setup-java: false
         env:
           JRELEASER_PROJECT_VERSION: ${{ needs.precheck.outputs.VERSION }}
           JRELEASER_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
