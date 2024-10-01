@@ -62,7 +62,11 @@ jobs:
           maven-version: ${{ env.MAVEN_VERSION }}
 
       - name: Build
-        run: mvn --file pom.xml verify
+        run: mvn -Pci --file pom.xml verify
+
+      # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
+      - name: Update dependency graph
+        uses: advanced-security/maven-dependency-submission-action@v4
 
       - name: Release
         uses: jreleaser/release-action@v2
