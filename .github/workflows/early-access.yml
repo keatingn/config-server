@@ -63,7 +63,7 @@ jobs:
 
 
       - name: Build
-        run: mvn -Pci -Djib.from.auth.username=${{ github.actor }} -Djib.from.auth.password=${{ secrets.GITHUB_TOKEN }} --file pom.xml verify
+        run: mvn -Pci -Djib.from.auth.username=${{ github.actor }} -Djib.from.auth.password=${{ secrets.GH_PAC }} --file pom.xml verify
 
       # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
       - name: Update dependency graph
