@@ -69,7 +69,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build
-        run: mvn -Djib.from.auth.username=${{ github.actor }} -Djib.from.auth.password=${{ secrets.GITHUB_TOKEN }} --file pom.xml verify
+        run: mvn --file pom.xml verify
 
       - name: Release
         uses: jreleaser/release-action@v2
