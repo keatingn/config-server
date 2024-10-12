@@ -5,9 +5,16 @@
     <parent>
         <groupId>ie.nak</groupId>
         <artifactId>nak-parent</artifactId>
-        <version>0.0.3</version>
+        <version>0.0.6-SNAPSHOT</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
+
+    <scm>
+        <connection>scm:git:${project.scm.url}.git</connection>
+        <developerConnection>scm:git:${project.scm.url}.git</developerConnection>
+        <url>https://github.com/keatingn/${project.artifactId}</url>
+        <tag>HEAD</tag>
+    </scm>
 
     <artifactId>config-server</artifactId>
     <version>0.0.3-SNAPSHOT</version>
