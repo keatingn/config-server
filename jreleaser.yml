@@ -6,9 +6,9 @@ project:
   authors:
     - Noel Keating
   license: Commercial
-  inceptionYear: 2024
+  inceptionYear: '2024'
   java:
-    version: 21
+    version: '21'
     groupId: ie.nak
     artifactId: config-server
     mainClass: ie.nak.confivserver.ConfigServerApplication

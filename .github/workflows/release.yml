@@ -1,11 +1,8 @@
 name: Release
 
 on:
-  workflow_dispatch:
-    inputs:
-      version:
-        description: 'Release version'
-        required: true
+  push:
+    branches: [ main ]
 
 env:
   JAVA_VERSION: '21'
@@ -14,39 +11,21 @@ env:
   MAVEN_ARGS: "--no-transfer-progress --batch-mode"
 
 jobs:
-  precheck:
-    name: Precheck
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      # Need Maven 3.9.0+ to recognize MAVEN_ARGS.
-      - name: Set up Maven
-        uses: stCarolas/setup-maven@v5
-        with:
-          maven-version: ${{ env.MAVEN_VERSION }}
-
-      - name: Version
-        id: vars
-        shell: bash
-        run: |
-          VERSION=${{ github.event.inputs.version }}
-          mvn versions:set versions:commit -DnewVersion=$VERSION
-          git config --global user.email "3072770+github-actions[bot]@users.noreply.github.com"
-          git config --global user.name "GitHub Action"
-          git commit -a -m "Releasing version $VERSION"
-          git push origin main
-
   release:
-    needs: [ precheck ]
+    name: Release
+    permissions:
+      contents: write
+      packages: write
     runs-on: ubuntu-latest
+    if: "!contains(github.event.head_commit.message, '[ci skip]')"
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          ref: main
           fetch-depth: 0
+
+      # Configure build steps as you'd normally do
 
       - name: Setup Java
         uses: actions/setup-java@v4
@@ -68,15 +47,23 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build
-        run: mvn --file pom.xml verify
+      # Post JARs to GitHub Packages
+
+      - name: Prepare release
+        run: |
+          git config user.name "${{ github.event.head_commit.committer.name }}"
+          git config user.email "${{ github.event.head_commit.committer.email }}"
+          mvn --file pom.xml release:prepare
+
+      - name: Preform release
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          mvn --file pom.xml release:perform
 
       - name: Release
         uses: jreleaser/release-action@v2
-        with:
-          arguments: full-release
         env:
-          JRELEASER_PROJECT_VERSION: ${{ github.event.inputs.version }}
           JRELEASER_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: JReleaser output
