@@ -33,6 +33,7 @@ jobs:
           java-version: ${{ env.JAVA_VERSION }}
           distribution: ${{ env.JAVA_DISTRO }}
           settings-path: ${{ github.workspace }} # Location for the generated settings.xml file
+          server-password: ${{secrets.GH_PAC}}
           cache: maven
 
       # Need Maven 3.9.0+ to recognize MAVEN_ARGS.
