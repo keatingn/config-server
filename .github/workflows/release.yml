@@ -32,7 +32,6 @@ jobs:
         with:
           java-version: ${{ env.JAVA_VERSION }}
           distribution: ${{ env.JAVA_DISTRO }}
-          server-password: 'GH_PAT'
           cache: maven
 
       # Need Maven 3.9.0+ to recognize MAVEN_ARGS.
@@ -40,6 +39,9 @@ jobs:
         uses: stCarolas/setup-maven@v5
         with:
           maven-version: ${{ env.MAVEN_VERSION }}
+
+      - name: Mvn Effective Settings
+        run: mvn -N help:effective-settings
 
       - name: Log in to the Container registry
         uses: docker/login-action@65b78e6e13532edd9afa3aa52ac7964289d1a9c1
