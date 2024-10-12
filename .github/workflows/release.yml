@@ -69,7 +69,7 @@ jobs:
           git remote -v
           mvn --file pom.xml release:prepare
           VERSION=$(git describe --tags --abbrev=0)
-          echo "Version: ${VERSION}"
+          echo "VERSION=${VERSION}" >> $GITHUB_ENV
 
       - name: Preform release
         env:
@@ -80,7 +80,7 @@ jobs:
       - name: Release
         uses: jreleaser/release-action@v2
         env:
-          JRELEASER_PROJECT_VERSION: ${ VERSION }
+          JRELEASER_PROJECT_VERSION: ${{ env.VERSION }}
           JRELEASER_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 
