@@ -68,6 +68,8 @@ jobs:
           git config user.email "${{ github.event.head_commit.committer.email }}"
           git remote -v
           mvn --file pom.xml release:prepare
+          VERSION=$(git describe --tags --abbrev=0)
+          echo "Version: ${VERSION}"
 
       - name: Preform release
         env:
@@ -78,7 +80,9 @@ jobs:
       - name: Release
         uses: jreleaser/release-action@v2
         env:
+          JRELEASER_PROJECT_VERSION: ${ VERSION }
           JRELEASER_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
 
       - name: JReleaser output
         if: always()
