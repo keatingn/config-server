@@ -33,14 +33,14 @@ jobs:
           java-version: ${{ env.JAVA_VERSION }}
           distribution: ${{ env.JAVA_DISTRO }}
           settings-path: ${{ github.workspace }} # Location for the generated settings.xml file
-          server-password: ${{secrets.GH_PAC}}
+          server-password: ${{ secrets.GITHUB_TOKEN }}
           cache: maven
 
-      # Need Maven 3.9.0+ to recognize MAVEN_ARGS.
-      - name: Set up Maven
-        uses: stCarolas/setup-maven@v5
-        with:
-          maven-version: ${{ env.MAVEN_VERSION }}
+#      # Need Maven 3.9.0+ to recognize MAVEN_ARGS.
+#      - name: Set up Maven
+#        uses: stCarolas/setup-maven@v5
+#        with:
+#          maven-version: ${{ env.MAVEN_VERSION }}
 
       - name: Mvn Effective Settings
         run: mvn -N help:effective-settings
