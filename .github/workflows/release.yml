@@ -35,7 +35,7 @@ jobs:
           server-id: github # This should match the <id> in the pom.xml repository section
           settings-path: ${{ github.workspace }} # Location for the generated settings.xml file
           server-username: GITHUB_ACTOR
-          server-password: ${{ secrets.GH_PAT }}
+          server-password: ${{ secrets.GH_PAC }}
           cache: maven
 
       # Need Maven 3.9.0+ to recognize MAVEN_ARGS.
