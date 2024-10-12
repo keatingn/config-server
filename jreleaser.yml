@@ -11,7 +11,7 @@ project:
     version: '21'
     groupId: ie.nak
     artifactId: config-server
-    mainClass: ie.nak.confivserver.ConfigServerApplication
+    mainClass: ie.nak.configserver.ConfigServerApplication
 
 release:
   github:
@@ -21,9 +21,3 @@ release:
       preset: conventional-commits
       contributors:
         format: '- {{contributorName}}{{#contributorUsernameAsLink}} ({{.}}){{/contributorUsernameAsLink}}'
-
-distributions:
-  config-server:
-    type: SINGLE_JAR
-    artifacts:
-      - path: target/{{distributionName}}-{{projectVersion}}.jar
