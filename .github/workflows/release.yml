@@ -47,7 +47,7 @@ jobs:
 
       - name: Mvn Effective Settings
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GH_PAC }}
         run: mvn -N help:effective-settings
 
       - name: Log in to the Container registry
