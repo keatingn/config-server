@@ -47,51 +47,7 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>org.springframework.cloud</groupId>
-                <artifactId>spring-cloud-dependencies</artifactId>
-                <version>${spring-cloud.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
 
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <configuration>
-                    <classifier>boot</classifier>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>com.google.cloud.tools</groupId>
-                <artifactId>jib-maven-plugin</artifactId>
-                <version>3.4.3</version>
-                <configuration>
-                    <from>
-                        <image>${jib.base.image}</image>
-                    </from>
-                    <to>
-                        <image>ghcr.io/keatingn/${project.artifactId}</image>
-                        <tags>${project.version}</tags>
-                    </to>
-                    <containerizingMode>packaged</containerizingMode>
-                    <container>
-                        <mainClass>${app.mainClass}</mainClass>
-                        <ports>
-                            <port>${app.port}</port>
-                        </ports>
-                        <user>65532:65532</user>
-                    </container>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
 
     <profiles>
         <profile>
@@ -115,12 +71,11 @@
         </profile>
     </profiles>
 
-    <distributionManagement>
+    <repositories>
         <repository>
             <id>github</id>
             <name>GitHub keatingn Apache Maven Packages</name>
-            <url>https://maven.pkg.github.com/keatingn/config-server</url>
+            <url>https://maven.pkg.github.com/keatingn/*</url>
         </repository>
-    </distributionManagement>
-
+    </repositories>
 </project>
