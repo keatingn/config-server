@@ -37,7 +37,7 @@ jobs:
           cache: maven
 
       - name: Mvn  Settings
-        run: cat ${{ github.workspace }}/.m2/settings.xml
+        run: cat ${{ github.workspace }}/settings.xml
 
 #      # Need Maven 3.9.0+ to recognize MAVEN_ARGS.
 #      - name: Set up Maven
