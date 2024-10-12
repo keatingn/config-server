@@ -32,18 +32,16 @@ jobs:
         with:
           java-version: ${{ env.JAVA_VERSION }}
           distribution: ${{ env.JAVA_DISTRO }}
-#          settings-path: ${{ github.workspace }} # Location for the generated settings.xml file
-#          server-password: ${{ secrets.GITHUB_TOKEN }}
           cache: maven
-
-      - name: Mvn  Settings
-        run: cat ~/.m2/settings.xml
 
       # Need Maven 3.9.0+ to recognize MAVEN_ARGS.
       - name: Set up Maven
         uses: stCarolas/setup-maven@v5
         with:
           maven-version: ${{ env.MAVEN_VERSION }}
+
+      - name: Mvn  Settings
+        run: cat ~/.m2/settings.xml
 
       - name: Mvn Effective Settings
         env:
@@ -63,6 +61,7 @@ jobs:
         run: |
           git config user.name "${{ github.event.head_commit.committer.name }}"
           git config user.email "${{ github.event.head_commit.committer.email }}"
+          git remote -v
           mvn --file pom.xml release:prepare
 
       - name: Preform release
