@@ -12,11 +12,11 @@
         <connection>scm:git:${project.scm.url}.git</connection>
         <developerConnection>scm:git:${project.scm.url}.git</developerConnection>
         <url>https://github.com/keatingn/${project.artifactId}</url>
-        <tag>config-server-0.0.3</tag>
+        <tag>HEAD</tag>
     </scm>
 
     <artifactId>config-server</artifactId>
-    <version>0.0.3</version>
+    <version>0.0.4-SNAPSHOT</version>
     <name>config-server</name>
     <description>config-server</description>
 
