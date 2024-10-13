@@ -40,19 +40,6 @@ jobs:
         with:
           maven-version: ${{ env.MAVEN_VERSION }}
 
-#      - name: Mvn  Settings
-#        run: cat ~/.m2/settings.xml
-#
-#      - name: Mvn Effective Settings
-#        env:
-#          GITHUB_TOKEN: ${{ secrets.GH_PAC }}
-#        run: mvn -N help:effective-settings
-#
-#      - name: Mvn Effective Pom
-#        env:
-#          GITHUB_TOKEN: ${{ secrets.GH_PAC }}
-#        run: mvn -N help:effective-pom
-
       - name: Log in to the Container registry
         uses: docker/login-action@65b78e6e13532edd9afa3aa52ac7964289d1a9c1
         with:
