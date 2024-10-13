@@ -53,6 +53,13 @@ jobs:
 #          GITHUB_TOKEN: ${{ secrets.GH_PAC }}
 #        run: mvn -N help:effective-pom
 
+      - name: Log in to the Container registry
+        uses: docker/login-action@65b78e6e13532edd9afa3aa52ac7964289d1a9c1
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
       # Post JARs to GitHub Packages
 
       - name: Prepare release
@@ -64,9 +71,6 @@ jobs:
           mvn --file pom.xml release:prepare
           VERSION=$(git describe --tags --abbrev=0)
           echo "VERSION=${VERSION##*-}" >> $GITHUB_ENV
-
-      - name: Login into ghcr.io
-        run: docker login --username ${{ github.actor }} --password ${{ secrets.GH_PAT }} ghcr.io
 
       - name: Preform release
         env:
