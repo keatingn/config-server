@@ -65,14 +65,14 @@ jobs:
           VERSION=$(git describe --tags --abbrev=0)
           echo "VERSION=${VERSION##*-}" >> $GITHUB_ENV
 
+      - name: Login into ghcr.io
+        run: docker login --username ${{ github.actor }} --password ${{ secrets.GH_PAT }} ghcr.io
+
       - name: Preform release
         env:
           GITHUB_TOKEN: ${{ github.token }}
         run: |
           mvn -Pci --file pom.xml release:perform
-
-      - name: Login into ghcr.io
-        run: docker login --username ${{ github.actor }} --password ${{ secrets.GH_PAT }} ghcr.io
 
       - name: Release
         uses: jreleaser/release-action@v2
