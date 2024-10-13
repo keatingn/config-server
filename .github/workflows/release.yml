@@ -63,6 +63,8 @@ jobs:
       # Post JARs to GitHub Packages
 
       - name: Prepare release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_PAC }}
         run: |
           git config user.name "${{ github.event.head_commit.committer.name }}"
           git config user.email "${{ github.event.head_commit.committer.email }}"
